@@ -1,0 +1,19 @@
+---
+# zerodowntime.docker/handlers/main.yml
+
+- name: restart docker
+  systemd:
+    name: "{{ docker__service_name }}"
+    state: restarted
+
+
+- name: start docker
+  systemd:
+    name: "{{ docker__service_name }}"
+    state: started
+
+
+- name: stop docker
+  systemd:
+    name: "{{ docker__service_name }}"
+    state: stopped

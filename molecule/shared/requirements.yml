@@ -1,0 +1,13 @@
+---
+
+- src: git+git@git.zdt.io:ansible/roles/zerodowntime.python_docker.git
+  name: zerodowntime.python_docker
+
+- src: git+git@git.zdt.io:ansible/roles/zerodowntime.docker_repo.git
+  name: zerodowntime.docker_repo
+
+- src: git+git@git.zdt.io:ansible/roles/zerodowntime.kernel_el.git
+  name: zerodowntime.kernel_el
+
+- src: git+git@git.zdt.io:ansible/roles/zerodowntime.elrepo_repo.git
+  name: zerodowntime.elrepo_repo

@@ -1,0 +1,8 @@
+---
+# /projects/roles/zerodowntime.docker/vars/main.yml
+
+#? docker__service_name:
+#?   type: string
+#?   description: Service name to be installed
+#?   required: True
+docker__service_name: docker

@@ -1,0 +1,140 @@
+---
+# zerodowntime.docker/tasks/main.yml
+
+- name: Docker | install docker packages
+  vars:
+    ver_pref:
+      apt: '='
+      yum: '-'
+    docker___version: "{{ (ver_pref[ansible_pkg_mgr] + docker__package_version) if docker__package_version else '' }}"
+  package:
+    name: "{{ docker__package_name }}{{ docker___version }}"
+    state: "{{ docker__package_state }}"
+  tags:
+    - docker
+    - docker::install
+
+# todo
+# device-mapper-persistent-data lvm2
+# net.bridge.bridge-nf-call-ip6tables = 1
+# net.bridge.bridge-nf-call-iptables = 1
+
+- name: Docker | create docker group
+  group:
+    name: docker
+    state: present
+    system: true
+  tags:
+    - docker
+    - docker::install
+
+
+- name: Docker | create config dir
+  file:
+    path: /etc/docker/
+    state: directory
+  tags:
+    - docker
+    - docker::install
+
+
+- name: Create docker datadir
+  file:
+    path: "{{ docker__graph }}"
+    state: directory
+    recurse: true
+  when:
+    - docker__graph is defined and docker__graph
+  tags:
+    - docker
+    - docker::install
+    - docker::configure
+
+- name: docker datadir permissions
+  file:
+    path: "{{ docker__graph }}"
+    state: directory
+    mode: 0711
+    seuser: system_u
+    serole: object_r
+    setype: container_var_lib_t
+  when:
+    - docker__graph is defined and docker__graph
+  tags:
+    - docker
+    - docker::install
+    - docker::configure
+
+
+- name: Docker | upload systemd unit
+  template:
+    src: docker.service.j2
+    dest: /etc/systemd/system/docker.service
+    mode: 0644
+    seuser: system_u
+    serole: object_r
+    setype: systemd_unit_file_t
+  notify:
+    - restart docker
+  register: docker___systemd_unit
+  tags:
+    - docker
+    - docker::install
+    - docker::configure
+
+
+- name: Docker | reload systemd
+  systemd:
+    daemon_reload: true
+  when:
+    - docker___systemd_unit is defined
+    - docker___systemd_unit.changed
+  tags:
+    - docker
+    - docker::install
+    - docker::configure
+    - skip_ansible_lint
+
+
+- name: Docker | upload config file
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+    seuser: system_u
+    serole: object_r
+    setype: container_config_t
+  notify:
+    - restart docker
+  tags:
+    - docker
+    - docker::install
+    - docker::configure
+
+
+- name: Docker | ensure service is enabled
+  systemd:
+    name: "{{ docker__service_name }}"
+    enabled: true
+  tags:
+    - docker
+    - docker::enabled
+
+
+- name: Docker | ensure service is running
+  systemd:
+    name: "{{ docker__service_name }}"
+    state: started
+  tags:
+    - docker
+    - docker::running
+
+
+- name: Docker swarm tasks
+  import_tasks: swarm.yml
+  when: docker__swarm
+  tags:
+    - docker
+    - docker::swarm

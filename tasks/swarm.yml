@@ -1,0 +1,28 @@
+---
+# roles/zerodowntime.docker/tasks/swarm.yml
+
+- name: Docker swarm init
+  docker_swarm:
+    state: present
+    advertise_addr: "{{ docker__swarm_advertise_addr|default(omit,true) }}"
+  when:
+    - docker__swarm_init|bool
+
+# Not debug. Needed for get registered vars
+- name: Get docker swarm status
+  docker_swarm:
+    state: inspect
+  register: docker___swarm_info
+
+- name: Join node to docker swarm
+  docker_swarm:
+    state: join
+    advertise_addr: "{{ docker__swarm_advertise_addr }}"
+    join_token: "{{ docker__swarm_join_token }}"
+    remote_addrs: "{{ docker__swarm_join_addr }}"
+
+
+- name: Set docker node availability
+  command: "docker node update --availability {{ docker__availability }} {{ docker__swarm_node_name }}"
+  when:
+    - docker__availability is defined and docker__availability

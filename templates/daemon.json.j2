@@ -1,0 +1,15 @@
+{% set record_info = dict() %}
+{% set _dummy = record_info.update( {'debug': docker__debug|bool })  %}
+{% set _dummy = record_info.update( {'log-driver': docker__log_driver })  %}
+{% set _dummy = record_info.update( {'log-opts': docker__log_driver_opts })  %}
+{% if docker__insecure_registries %}
+{% set _dummy = record_info.update( {'insecure-registries': docker__insecure_registries })  %}
+{% endif %}
+{% if docker__graph %}
+{% set _dummy = record_info.update( {'graph': docker__graph })  %}
+{% endif %}
+{% if docker__log_level %}
+{% set _dummy = record_info.update( {'log-level': docker__log_level })  %}
+{% endif %}
+{# ----------------------------------------------------------------------- #}
+{{ record_info|to_nice_json }}

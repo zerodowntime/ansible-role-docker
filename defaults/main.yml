@@ -1,0 +1,142 @@
+---
+# zerodowntime.docker/defaults/main.yml
+
+#? docker__package_state:
+#?   type: string
+#?   description: Package state `present`,`latest`
+#?   required: True
+#?   default: present
+docker__package_state: present
+
+
+#? docker__storage_driver:
+#?   type: string
+#?   description: Docker storage driver
+#?   required: True
+#?   default: overlay2
+docker__storage_driver: overlay2
+
+
+#? docker__package_name:
+#?   type: string
+#?   description: Package name to be installed
+#?   required: True
+#?   default: docker-ce
+docker__package_name: docker-ce
+
+
+#? docker__package_version:
+#?   type: string
+#?   description: Package version to be installed
+#?   required: True
+#?   default: !!null
+# example:
+#  docker__package_version: !!null
+#  # centos:
+#  docker__package_version: 18.09.3
+#  # ubuntu:
+#  docker__package_version: 5:18.09.3~3-0~ubuntu-bionic
+docker__package_version: !!null
+
+
+#? docker__debug:
+#?   type: bool
+#?   description: Enable debug mode
+#?   required: True
+#?   default: false
+docker__debug: false
+
+
+#? docker__log_driver:
+#?   type: string
+#?   description: Default driver for container logs
+#?   required: True
+#?   default: json-file
+docker__log_driver: json-file
+
+
+#? docker__log_driver_opts:
+#?   type: dict
+#?   description: Log options
+#?   required: True
+#?   default:
+docker__log_driver_opts:
+  max-size: 100m
+  max-file: '10'
+
+
+#? docker__graph:
+#?   type: string
+#?   description: Path to directory to store persistent data and resource configuration
+#?   required: true
+#?   default: !!null
+docker__graph: !!null
+
+
+#? docker__hosts:
+#?   type: list
+#?   description: List of docker listen interfaces
+#?   required: True
+#?   default: fd://
+# example:
+#  docker__hosts:
+#    - fd://
+#    - tcp://0.0.0.0:2375
+docker__hosts:
+  - fd://
+
+
+#? docker__log_level:
+#?   type: string
+#?   description: Specifies the maxmimum libdm log level that will be forwarded to the dockerd log
+#?   required: True
+#?   default: info
+docker__log_level: info
+
+
+#? docker__swarm:
+#?   type: bool
+#?   description: is docker swarm
+#?   required: True
+docker__swarm: false
+
+#? docker__swarm_advertise_addr:
+#?   type: string
+#?   description: swarm advertise address
+#?   required: True
+docker__swarm_advertise_addr: !!null
+
+#? docker__swarm_init:
+#?   type: bool
+#?   description: Socek swarm init
+#?   required: True
+docker__swarm_init: false
+
+#? docker__swarm_join_addr:
+#?   type: list
+#?   description: list of swarm join addresses
+#?   required: True
+docker__swarm_join_addr: []
+
+#? docker__swarm_join_token:
+#?   type: string
+#?   description: swarm join token for Manager or Worker
+#?   required: True
+docker__swarm_join_token: !!null
+
+
+#? docker__insecure_registries:
+#?   type: list,
+#?   description: list of docker insecure registry
+#?   required: False
+docker__insecure_registries: []
+
+
+#? docker__availability:
+#?   type: string
+#?   description: docker availability mode
+#?   required: True
+#?   default: example_overide
+docker__availability: !!null
+
+docker__swarm_node_name: "{{ hostname }}"

@@ -1,0 +1,34 @@
+---
+# zerodowntime.docker/meta/main.yml
+
+galaxy_info:
+  author: ZeroDowntime <ansible@zerodowntime.pl>
+  company: ZeroDowntime Sp. z o.o.
+  role_name: docker
+  description: Install docker
+  license: Apache License 2.0
+
+  min_ansible_version: 2.7
+
+  platforms:
+    - name: EL
+      versions:
+        - 7
+    - name: Ubuntu
+      versions:
+        - bionic
+        - xenial
+
+  galaxy_tags:
+    - system
+    - docker
+
+dependencies:
+
+  - role: zerodowntime.docker_repo
+    tags:
+      - docker
+
+  - role: zerodowntime.python_docker
+    tags:
+      - docker
