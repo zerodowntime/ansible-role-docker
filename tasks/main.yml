@@ -2,6 +2,7 @@
 # zerodowntime.docker/tasks/main.yml
 
 - name: Docker | install docker packages
+  become: true
   vars:
     ver_pref:
       apt: '='
@@ -20,6 +21,7 @@
 # net.bridge.bridge-nf-call-iptables = 1
 
 - name: Docker | create docker group
+  become: true
   group:
     name: docker
     state: present
@@ -30,6 +32,7 @@
 
 
 - name: Docker | create config dir
+  become: true
   file:
     path: /etc/docker/
     state: directory
@@ -39,6 +42,7 @@
 
 
 - name: Create docker datadir
+  become: true
   file:
     path: "{{ docker__graph }}"
     state: directory
@@ -51,6 +55,7 @@
     - docker::configure
 
 - name: docker datadir permissions
+  become: true
   file:
     path: "{{ docker__graph }}"
     state: directory
@@ -67,6 +72,7 @@
 
 
 - name: Docker | upload systemd unit
+  become: true
   template:
     src: docker.service.j2
     dest: /etc/systemd/system/docker.service
@@ -84,6 +90,7 @@
 
 
 - name: Docker | reload systemd
+  become: true
   systemd:
     daemon_reload: true
   when:
@@ -97,6 +104,7 @@
 
 
 - name: Docker | upload config file
+  become: true
   template:
     src: daemon.json.j2
     dest: /etc/docker/daemon.json
@@ -115,6 +123,7 @@
 
 
 - name: Docker | ensure service is enabled
+  become: true
   systemd:
     name: "{{ docker__service_name }}"
     enabled: true
@@ -124,6 +133,7 @@
 
 
 - name: Docker | ensure service is running
+  become: true
   systemd:
     name: "{{ docker__service_name }}"
     state: started
