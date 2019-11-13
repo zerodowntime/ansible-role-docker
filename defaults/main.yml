@@ -47,6 +47,22 @@ docker__package_version: !!null
 docker__debug: false
 
 
+#? docker__ip_masq:
+#?   type: bool
+#?   description: Enable IP masquerading
+#?   required: True
+#?   default: true
+docker__ip_masq: true
+
+
+#? docker__iptables:
+#?   type: bool
+#?   description: Enable addition of iptables rules
+#?   required: True
+#?   default: true
+docker__iptables: true
+
+
 #? docker__log_driver:
 #?   type: string
 #?   description: Default driver for container logs
