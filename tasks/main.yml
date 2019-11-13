@@ -134,7 +134,7 @@
 
 - name: Docker swarm tasks
   import_tasks: swarm.yml
-  when: docker__swarm
+  when: docker__swarm|bool
   tags:
     - docker
     - docker::swarm
