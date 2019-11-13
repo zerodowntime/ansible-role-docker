@@ -1,5 +1,7 @@
 {% set record_info = dict() %}
 {% set _dummy = record_info.update( {'debug': docker__debug|bool })  %}
+{% set _dummy = record_info.update( {'ip-masq': docker__ip_masq|bool })  %}
+{% set _dummy = record_info.update( {'iptables': docker__iptables|bool })  %}
 {% set _dummy = record_info.update( {'log-driver': docker__log_driver })  %}
 {% set _dummy = record_info.update( {'log-opts': docker__log_driver_opts })  %}
 {% if docker__insecure_registries %}
