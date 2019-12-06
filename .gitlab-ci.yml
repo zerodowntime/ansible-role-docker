@@ -1,18 +1,18 @@
 ---
 include:
-  - project: 'misc/gitlab_templates'
+  - project: "misc/gitlab_templates"
     ref: master
-    file: '/molecule/.base-template.yml'
-  - project: 'misc/gitlab_templates'
+    file: "/molecule/.base-template.yml"
+  - project: "misc/gitlab_templates"
     ref: master
-    file: '/.clone-before-script-template.yml'
+    file: "/.clone-before-script-template.yml"
 
 stages:
-  - ansible2_7_8
+  - ansible_2_8_x
 
-ansible2_7_8:
-  stage: ansible2_7_8
+ansible_2_8_x:
+  stage: ansible_2_8_x
   extends: .molecule.default
-  image: zerodowntime/gitlab_runner_executor_molecule:ansible-2.7.8
+  image: zerodowntime/gitlab_runner_executor_molecule:ansible-2.8
   script:
     - molecule test -s libvirt
