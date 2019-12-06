@@ -24,9 +24,16 @@
     join_token: "{{ docker__swarm_join_token }}"
     remote_addrs: "{{ docker__swarm_join_addr }}"
 
-
-- name: Set docker node availability
-  become: true
-  command: "docker node update --availability {{ docker__availability }} {{ docker__swarm_node_name }}"
+- name: Set node availability
+  docker_node:
+    hostname: "{{ docker__swarm_node_name }}"
+    availability: "{{ docker__availability }}"
   when:
-    - docker__availability is defined and docker__availability
+    - (docker__availability)
+
+- name: Set node labels and new labels
+  docker_node:
+    hostname: "{{ docker__swarm_node_name }}"
+    labels_state: replace
+    labels: "{{ docker__swarm_node_labels }}"
+  delegate_to: "{{ docker__delegate_to_master_host }}"

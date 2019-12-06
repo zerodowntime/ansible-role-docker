@@ -8,7 +8,6 @@
 #?   default: present
 docker__package_state: present
 
-
 #? docker__storage_driver:
 #?   type: string
 #?   description: Docker storage driver
@@ -16,14 +15,12 @@ docker__package_state: present
 #?   default: overlay2
 docker__storage_driver: overlay2
 
-
 #? docker__package_name:
 #?   type: string
 #?   description: Package name to be installed
 #?   required: True
 #?   default: docker-ce
 docker__package_name: docker-ce
-
 
 #? docker__package_version:
 #?   type: string
@@ -38,14 +35,12 @@ docker__package_name: docker-ce
 #  docker__package_version: 5:18.09.3~3-0~ubuntu-bionic
 docker__package_version: !!null
 
-
 #? docker__debug:
 #?   type: bool
 #?   description: Enable debug mode
 #?   required: True
 #?   default: false
 docker__debug: false
-
 
 #? docker__ip_masq:
 #?   type: bool
@@ -54,14 +49,12 @@ docker__debug: false
 #?   default: true
 docker__ip_masq: true
 
-
 #? docker__iptables:
 #?   type: bool
 #?   description: Enable addition of iptables rules
 #?   required: True
 #?   default: true
 docker__iptables: true
-
 
 #? docker__log_driver:
 #?   type: string
@@ -70,7 +63,6 @@ docker__iptables: true
 #?   default: json-file
 docker__log_driver: json-file
 
-
 #? docker__log_driver_opts:
 #?   type: dict
 #?   description: Log options
@@ -78,8 +70,7 @@ docker__log_driver: json-file
 #?   default:
 docker__log_driver_opts:
   max-size: 100m
-  max-file: '10'
-
+  max-file: "10"
 
 #? docker__graph:
 #?   type: string
@@ -87,7 +78,6 @@ docker__log_driver_opts:
 #?   required: true
 #?   default: !!null
 docker__graph: !!null
-
 
 #? docker__hosts:
 #?   type: list
@@ -101,14 +91,12 @@ docker__graph: !!null
 docker__hosts:
   - fd://
 
-
 #? docker__log_level:
 #?   type: string
 #?   description: Specifies the maxmimum libdm log level that will be forwarded to the dockerd log
 #?   required: True
 #?   default: info
 docker__log_level: info
-
 
 #? docker__swarm:
 #?   type: bool
@@ -140,19 +128,38 @@ docker__swarm_join_addr: []
 #?   required: True
 docker__swarm_join_token: !!null
 
-
 #? docker__insecure_registries:
 #?   type: list,
 #?   description: list of docker insecure registry
 #?   required: False
 docker__insecure_registries: []
 
-
 #? docker__availability:
 #?   type: string
 #?   description: docker availability mode
 #?   required: True
-#?   default: example_overide
 docker__availability: !!null
 
+#? docker__swarm_node_labels:
+#?   type: list
+#?   description: docker swarm - labels of the node
+#?   required: True
+docker__swarm_node_labels: {}
+
+#? docker__swarm_node_name:
+#?   type: list
+#?   description: docker swarm - name of node
+#?   required: True
 docker__swarm_node_name: "{{ hostname }}"
+
+#? docker__networks:
+#?   type: list
+#?   description: docker networks
+#?   required: True
+docker__networks: []
+
+#? docker__delegate_to_master_host:
+#?   type: list
+#?   description: docker swarm - swarm master to execute master exclusive tasks
+#?   required: True
+docker__delegate_to_master_host: "{{ inventory_hostname }}"
